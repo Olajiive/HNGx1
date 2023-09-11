@@ -41,4 +41,4 @@ def get_info():
     return response_data, 200, {'Content-Type': 'application/json'}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
