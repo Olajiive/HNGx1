@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+import pytz
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -14,11 +15,13 @@ def get_info():
     
     if not track:
         return jsonify({"error": "The track field is required"}), 400
-    # Get current day of the week
-    current_day = datetime.datetime.utcnow().strftime('%A')
     
     # Get current UTC time with validation of +/-2 minutes
-    current_utc_time = datetime.datetime.utcnow()
+    current_utc_time = datetime.datetime.now(pytz.utc)
+
+    # Get current day of the week
+    current_day = current_utc_time.strftime('%A')
+    
     
     # Create GitHub URLs
     github_repo_url = "https://github.com/Olajiive/HNGx1"
@@ -28,7 +31,7 @@ def get_info():
     response_data = {
         "slack_name": slack_name,
         "current_day": current_day,
-        "utc_time": current_utc_time.isoformat() + "Z",
+        "utc_time": current_utc_time,
         "track": track,
         "github_file_url": github_file_url,
         "github_repo_url": github_repo_url,
